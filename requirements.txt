@@ -3,3 +3,4 @@ flask
 gunicorn
 Pillow
 numpy
+psycopg2
