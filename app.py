@@ -136,7 +136,7 @@ def handle_location(event):
     result = get_dict_resultset(conn, "select * from locations;")
 
     for i, row in enumerate(result):
-        pins.append([float(row['lat']), float(row['lon']), str(i)]))
+        pins.append([float(row['lat']), float(row['lon']), str(i)])
 
     actions = []
     for i, pin in enumerate(pins):
