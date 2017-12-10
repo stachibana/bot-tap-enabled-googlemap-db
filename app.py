@@ -137,7 +137,8 @@ def handle_location(event):
 
     for i, row in enumerate(result):
         pins.append([float(row['lat']), float(row['lon']), str(i)])
-
+    print(json.dumps(pins))
+    
     actions = []
     for i, pin in enumerate(pins):
 
