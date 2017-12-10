@@ -186,8 +186,8 @@ def get_dict_resultset(conn, sql):
     return dict_result
 
 def getDBConnection():
-    parse.uses_netloc.append("postgres")
-    url = parse.urlparse(os.environ["DATABASE_URL"])
+    urllib.parse.uses_netloc.append("postgres")
+    url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
 
     conn = psycopg2.connect(
         database=url.path[1:],
