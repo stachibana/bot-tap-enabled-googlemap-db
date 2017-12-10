@@ -16,6 +16,7 @@ import math
 
 import psycopg2
 import psycopg2.extras
+import json
 
 app = Flask(__name__)
 
@@ -68,6 +69,16 @@ def handle_message(event):
                     latitude = pins[int(event.message.text)][0],
                     longitude = pins[int(event.message.text)][1]
                 )
+            ]
+        )
+    elif event.message.text == 'データ':
+        conn = getDBConnection()
+        cur = conn.cursor()
+        result = get_dict_resultset(conn, "select * from locations;")
+        line_bot_api.reply_message(
+            event.reply_token,
+            [
+                TextSendMessage(text=json.dumps(result)),
             ]
         )
     else:
