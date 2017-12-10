@@ -130,6 +130,14 @@ def handle_location(event):
     pin_width = 60 * 1.5;
     pin_height = 84 * 1.5;
 
+    pins = []
+    conn = getDBConnection()
+    cur = conn.cursor()
+    result = get_dict_resultset(conn, "select * from locations;")
+
+    for i, row in enumerate(result):
+        pins.append([float(row['lat']), float(row['lon']), str(i)]))
+
     actions = []
     for i, pin in enumerate(pins):
 
