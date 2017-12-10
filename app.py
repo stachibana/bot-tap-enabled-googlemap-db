@@ -14,6 +14,9 @@ import urllib.parse
 import numpy
 import math
 
+import psycopg2
+import psycopg2.extras
+
 app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.environ.get('CHANNEL_ACCESS_TOKEN'))
@@ -92,6 +95,13 @@ def handle_location(event):
     lat = event.message.latitude
     lon = event.message.longitude
 
+    # データベースに保存
+    conn = getDBConnection()
+    cur = conn.cursor()
+    cur.execute("insert into users (userid, lat, lon) values(%s, %s, %s) ", (event.source.user_id, lat, lon))
+    conn.commit()
+    cur.close()
+
     zoomlevel = 18
     imagesize = 1040
     # 縦横1040ピクセルの画像を取得
@@ -165,6 +175,28 @@ def latlon_to_pixel(lat, lon):
     lat_pixel = round(offset + radius * lon * numpy.pi / 180);
     lon_pixel = round(offset - radius * math.log((1 + math.sin(lat * numpy.pi / 180)) / (1 - math.sin(lat * numpy.pi / 180))) / 2);
     return lat_pixel, lon_pixel
+
+def get_dict_resultset(conn, sql):
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cur.execute (sql)
+    resultset = cur.fetchall()
+    dict_result = []
+    for row in resultset:
+        dict_result.append(dict(row))
+    return dict_result
+
+def getDBConnection():
+    parse.uses_netloc.append("postgres")
+    url = parse.urlparse(os.environ["DATABASE_URL"])
+
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
+    return conn
 
 if __name__ == "__main__":
     app.run()
