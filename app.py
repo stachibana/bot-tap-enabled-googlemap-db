@@ -98,7 +98,7 @@ def handle_location(event):
     # データベースに保存
     conn = getDBConnection()
     cur = conn.cursor()
-    cur.execute("insert into users (userid, lat, lon) values(%s, %s, %s) ", (event.source.user_id, lat, lon))
+    cur.execute("insert into locations (userid, lat, lon) values(%s, %s, %s) ", (event.source.user_id, lat, lon))
     conn.commit()
     cur.close()
 
