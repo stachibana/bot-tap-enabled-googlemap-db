@@ -36,7 +36,7 @@ def callback():
         abort(400)
 
     return 'OK'
-
+"""
 pins = [
         [35.690810, 139.704500, 'A1'],
         [35.691321, 139.703438, 'A5'],
@@ -56,10 +56,12 @@ pins = [
         [35.689831, 139.703384, 'E9'],
         [35.689421, 139.701877, 'E10'],
         ];
+"""
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if event.message.text.isdigit():
+        """
         line_bot_api.reply_message(
             event.reply_token,
             [
@@ -71,6 +73,8 @@ def handle_message(event):
                 )
             ]
         )
+        """
+        # do somethong
     elif event.message.text == 'データ':
         conn = getDBConnection()
         cur = conn.cursor()
@@ -137,8 +141,8 @@ def handle_location(event):
 
     for i, row in enumerate(result):
         pins.append([float(row['lat']), float(row['lon']), str(i)])
-    print(json.dumps(pins))
-    
+    #print(json.dumps(pins))
+
     actions = []
     for i, pin in enumerate(pins):
 
